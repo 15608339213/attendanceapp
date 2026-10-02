@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>西安石油大学就创中心内务系统</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f0f2f5; color: #333; font-size: 15px; }
+  .container { max-width: 760px; margin: 0 auto; padding: 16px; padding-bottom: 40px; }
+  .brand { text-align: center; padding: 18px 0 6px; }
+  .brand .logo { width: 52px; height: 52px; margin: 0 auto 8px; border-radius: 12px; background: linear-gradient(135deg, #1a73e8, #0d47a1); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; font-weight: bold; }
+  .brand h1 { font-size: 19px; color: #0d47a1; letter-spacing: 1px; }
+  .brand .sub { font-size: 12px; color: #999; margin-top: 4px; letter-spacing: 2px; }
+  .clock { text-align: center; font-size: 38px; font-weight: bold; color: #1a73e8; margin: 10px 0 2px; font-variant-numeric: tabular-nums; }
+  .date { text-align: center; color: #888; margin-bottom: 14px; font-size: 13px; }
+  .card { background: #fff; border-radius: 14px; padding: 18px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  .card h2 { font-size: 16px; margin-bottom: 12px; color: #1a73e8; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+  .row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+  input, select, textarea { flex: 1; min-width: 0; padding: 11px 12px; border: 1px solid #d9d9d9; border-radius: 10px; font-size: 15px; outline: none; background: #fff; font-family: inherit; }
+  input:focus, select:focus, textarea:focus { border-color: #1a73e8; }
+  textarea { resize: vertical; min-height: 60px; }
+  button { padding: 11px 16px; border: none; border-radius: 10px; font-size: 15px; cursor: pointer; color: #fff; transition: opacity .15s; }
+  button:active { opacity: .8; }
+  .btn-primary { background: #1a73e8; }
+  .btn-green { background: #34a853; }
+  .btn-orange { background: #f9ab00; }
+  .btn-red { background: #ea4335; }
+  .btn-gray { background: #5f6368; }
+  .btn-sm { padding: 6px 12px; font-size: 13px; border-radius: 8px; }
+  .msg { padding: 10px 12px; border-radius: 10px; margin-top: 8px; font-size: 14px; display: none; }
+  .msg.ok { background: #e6f4ea; color: #137333; display: block; }
+  .msg.err { background: #fce8e6; color: #c5221f; display: block; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 8px 5px; text-align: left; border-bottom: 1px solid #f0f0f0; word-break: break-all; }
+  th { color: #888; font-weight: normal; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 12px; white-space: nowrap; }
+  .tag-normal { background: #e6f4ea; color: #137333; }
+  .tag-late { background: #fef7e0; color: #b06000; }
+  .tag-early { background: #fce8e6; color: #c5221f; }
+  .tag-pending { background: #e8f0fe; color: #1a73e8; }
+  .tag-approved { background: #e6f4ea; color: #137333; }
+  .tag-rejected { background: #fce8e6; color: #c5221f; }
+  .status-today { font-size: 14px; margin-top: 8px; color: #555; }
+  .tabs { display: flex; background: #fff; border-radius: 12px; overflow: hidden; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  .tabs button { flex: 1; border-radius: 0; background: #fff; color: #666; font-size: 14px; }
+  .tabs button.active { background: #1a73e8; color: #fff; }
+  .hidden { display: none !important; }
+  .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .topbar .who { font-size: 14px; color: #555; }
+  .req-item { border: 1px solid #eee; border-radius: 10px; padding: 12px; margin-bottom: 10px; font-size: 14px; }
+  .req-item .head { display: flex; justify-content: space-between; margin-bottom: 6px; font-weight: bold; }
+  .req-item .meta { color: #777; font-size: 13px; margin-bottom: 6px; }
+  .empty { color: #999; text-align: center; padding: 14px 0; font-size: 14px; }
+  .login-box { max-width: 380px; margin: 40px auto 0; }
+  .login-tabs { display: flex; margin-bottom: 16px; }
+  .login-tabs button { flex: 1; background: transparent; color: #888; border-bottom: 2px solid transparent; border-radius: 0; }
+  .login-tabs button.active { color: #1a73e8; border-bottom-color: #1a73e8; }
+  .footer { text-align: center; color: #bbb; font-size: 12px; padding: 20px 0; }
+  .loc-status { font-size: 13px; color: #555; margin-top: 8px; background: #f5f8ff; border-radius: 8px; padding: 8px 10px; }
+  .loc-status.err { background: #fce8e6; color: #c5221f; }
+  .remember { display: flex; align-items: center; gap: 6px; font-size: 14px; color: #555; margin-bottom: 10px; }
+  .remember input { width: 16px; height: 16px; flex: none; }
+  .file-btn { display: block; width: 100%; padding: 14px; border: 2px dashed #b6d0f5; border-radius: 10px; text-align: center; color: #1a73e8; font-size: 14px; cursor: pointer; background: #f8faff; }
+  .fold-card h2 { cursor: pointer; user-select: none; }
+  .fold-card h2::after { content: '▸'; margin-left: auto; color: #1a73e8; transition: transform .2s; }
+  .fold-card.open h2::after { transform: rotate(90deg); }
+  .fold-body { display: none; }
+  .fold-card.open .fold-body { display: block; }
+</style>
+</head>
+<body>
+
+<!-- 登录/注册页 -->
+<div id="authPage">
+  <div class="brand">
+    <div class="logo">就</div>
+    <h1>西安石油大学就创中心内务系统</h1>
+    <div class="sub">XSYU JCZX INTERNAL AFFAIRS SYSTEM</div>
+  </div>
+  <div class="login-box card">
+    <div class="login-tabs">
+      <button id="tabLogin" class="active" onclick="switchAuth('login')">登 录</button>
+      <button id="tabReg" onclick="switchAuth('reg')">注 册</button>
+    </div>
+    <div id="loginForm">
+      <div class="row"><input id="loginUser" placeholder="用户名（班级+姓名）" autocomplete="username"></div>
+      <div class="row"><input id="loginPw" type="password" placeholder="密码（注册时的手机号）" autocomplete="current-password"></div>
+      <label class="remember"><input type="checkbox" id="rememberPw" checked> 记住密码（保存到手机密码箱）</label>
+      <button class="btn-primary" style="width:100%" onclick="doLogin()">登录系统</button>
+    </div>
+    <div id="regForm" class="hidden">
+      <div class="row"><input id="regClass" placeholder="班级（如：计科2201）"></div>
+      <div class="row"><input id="regName" placeholder="真实姓名"></div>
+      <div class="row"><input id="regPhone" type="tel" maxlength="11" placeholder="手机号（将作为登录密码）"></div>
+      <button class="btn-green" style="width:100%" onclick="doRegister()">提交注册</button>
+    </div>
+    <div class="msg" id="authMsg"></div>
+  </div>
+  <div class="footer">西安石油大学就创中心 · 内务管理平台</div>
+</div>
+
+<!-- 主页面 -->
+<div id="mainPage" class="hidden">
+  <div class="container">
+    <div class="topbar">
+      <div class="who" id="whoami"></div>
+      <button class="btn-gray btn-sm" onclick="logout()">退出</button>
+    </div>
+
+    <div class="tabs">
+      <button id="tabBtn-home" class="active" onclick="switchTab('home')">打卡</button>
+      <button id="tabBtn-req" onclick="switchTab('req')">假勤</button>
+      <button id="tabBtn-me" onclick="switchTab('me')">我的</button>
+      <button id="tabBtn-admin" class="hidden" onclick="switchTab('admin')">管理</button>
+    </div>
+
+    <!-- 打卡页 -->
+    <div id="page-home">
+      <div class="clock" id="clock">--:--:--</div>
+      <div class="date" id="date"></div>
+      <div class="card">
+        <h2>⏰ 今日打卡（拍照打卡）</h2>
+        <div class="row">
+          <button class="btn-green" style="flex:1" onclick="clock('in')">📷 上班签到</button>
+          <button class="btn-orange" style="flex:1" onclick="clock('out')">📷 下班签退</button>
+        </div>
+        <div class="loc-status" id="locStatus">📷 打卡时将调用相机拍照，请正对工位拍摄</div>
+        <input type="file" id="photoInput" accept="image/*" capture="environment" class="hidden">
+        <div class="msg" id="clockMsg"></div>
+        <div class="status-today" id="todayStatus"></div>
+      </div>
+      <div class="card">
+        <h2>📊 部门统计</h2>
+        <table>
+          <thead><tr><th>成员</th><th>出勤</th><th>迟到</th><th>早退</th><th>外勤</th></tr></thead>
+          <tbody id="statsBody"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h2>🗓 值班看板 <span id="boardWeek" style="font-size:12px;color:#888;font-weight:normal"></span></h2>
+        <div class="row">
+          <button class="btn-gray btn-sm" style="flex:1" onclick="shiftWeek(-7)">上一周</button>
+          <button class="btn-gray btn-sm" style="flex:1" onclick="shiftWeek(0)">本周</button>
+          <button class="btn-gray btn-sm" style="flex:1" onclick="shiftWeek(7)">下一周</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table id="boardTable">
+            <thead></thead>
+            <tbody id="boardBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <h2>🔍 值班查询</h2>
+        <div class="row">
+          <input id="queryName" placeholder="输入姓名查询值班班次和时间" style="flex:2" onkeydown="if(event.key==='Enter')queryDuty()">
+          <button class="btn-primary" style="flex:1" onclick="queryDuty()">查询</button>
+        </div>
+        <div id="queryResult"></div>
+      </div>
+    </div>
+
+    <!-- 假勤申请页 -->
+    <div id="page-req" class="hidden">
+      <div class="card">
+        <h2>📝 提交申请</h2>
+        <div class="row">
+          <select id="reqType" style="flex:1" onchange="onReqTypeChange()">
+            <option value="leave">请假申请</option>
+            <option value="cancel_leave">销假申请</option>
+            <option value="shift">换班/补勤申请</option>
+            <option value="overtime">临时加班申请</option>
+          </select>
+        </div>
+        <div class="row" id="rowTarget" style="display:none">
+          <select id="reqTarget"></select>
+        </div>
+        <div class="row">
+          <input id="reqStart" type="date" style="flex:1">
+          <input id="reqEnd" type="date" style="flex:1" placeholder="结束日期">
+        </div>
+        <div class="row">
+          <textarea id="reqReason" placeholder="事由说明（如：病假、事假、加班工作内容等）"></textarea>
+        </div>
+        <button class="btn-primary" style="width:100%" onclick="submitReq()">提交申请</button>
+        <div class="msg" id="reqMsg"></div>
+      </div>
+      <div class="card">
+        <h2>📋 我的申请记录</h2>
+        <div id="myReqList"></div>
+      </div>
+    </div>
+
+    <!-- 我的页 -->
+    <div id="page-me" class="hidden">
+      <div class="card">
+        <h2>📅 我的考勤（近31天）</h2>
+        <table>
+          <thead><tr><th>日期</th><th>签到</th><th>签退</th><th>状态</th></tr></thead>
+          <tbody id="recordsBody"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h2>🗓 我的值班安排</h2>
+        <div id="myDutyList"></div>
+      </div>
+    </div>
+
+    <!-- 管理员页 -->
+    <div id="page-admin" class="hidden">
+      <div class="card">
+        <h2>📅 今日打卡 <span id="todayCount" class="tag tag-pending"></span></h2>
+        <div class="row">
+          <input id="todaySearch" placeholder="输入姓名搜索" style="flex:2" oninput="loadTodayRecords(this.value)">
+          <button class="btn-primary" style="flex:1" onclick="loadTodayRecords($('todaySearch').value)">查询</button>
+        </div>
+        <table>
+          <thead><tr><th>姓名</th><th>值班班次</th><th>签到</th><th>签退</th><th>状态</th></tr></thead>
+          <tbody id="todayRecordsBody"><tr><td colspan="5" class="empty">暂无打卡记录</td></tr></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h2>✅ 审批中心 <span id="pendingCount" class="tag tag-pending"></span></h2>
+        <div class="row">
+          <button class="btn-green btn-sm" style="flex:1" onclick="reviewAll('approve')">一键全部通过</button>
+          <button class="btn-red btn-sm" style="flex:1" onclick="reviewAll('reject')">一键全部驳回</button>
+        </div>
+        <div id="pendingList"></div>
+      </div>
+      <div class="card">
+        <h2>👥 成员管理（勾选批量操作）</h2>
+        <div class="row">
+          <label class="remember" style="flex:none"><input type="checkbox" id="selectAllUsers" onchange="toggleSelectAll(this.checked)"> 全选</label>
+          <span id="selCount" style="font-size:13px;color:#1a73e8;flex:none"></span>
+        </div>
+        <div class="row">
+          <button class="btn-green btn-sm" style="flex:1" onclick="batchAction('approve')">批量通过</button>
+          <button class="btn-primary btn-sm" style="flex:1" onclick="batchAction('activate')">批量激活</button>
+          <button class="btn-orange btn-sm" style="flex:1" onclick="batchAction('reset_password')">重置密码</button>
+          <button class="btn-red btn-sm" style="flex:1" onclick="batchAction('delete')">批量删除</button>
+        </div>
+        <table>
+          <thead><tr><th style="width:30px">选</th><th>姓名</th><th>用户名</th><th>角色</th><th>状态</th><th>操作</th></tr></thead>
+          <tbody id="adminUsersBody"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h2>📋 部门成员信息</h2>
+        <table>
+          <thead><tr><th>姓名</th><th>用户名</th><th>班级</th><th>角色</th><th>状态</th><th>加入时间</th></tr></thead>
+          <tbody id="memberInfoBody"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h2>🗓 值班表智能导入</h2>
+        <p style="font-size:13px;color:#777;margin-bottom:10px">上传值班表文件（docx / xlsx / csv），系统自动识别表格中的星期、时间段和姓名，批量生成值班安排。</p>
+        <label class="file-btn" for="dutyFile">📁 点击选择值班表文件</label>
+        <input type="file" id="dutyFile" class="hidden" onchange="onDutyFile()">
+        <div class="row" style="margin-top:10px">
+          <input id="dutyStart" type="date" style="flex:1" title="值班开始日期（自动对齐到周一）">
+          <select id="dutyWeeks" style="flex:1">
+            <option value="1">重复1周</option>
+            <option value="2">重复2周</option>
+            <option value="4" selected>重复4周</option>
+            <option value="8">重复8周</option>
+            <option value="16">重复16周</option>
+          </select>
+        </div>
+        <button class="btn-primary" style="width:100%" onclick="importDuty()">识别并导入值班表</button>
+        <div class="msg" id="importMsg"></div>
+      </div>
+      <div class="card">
+        <h2>🗓 值班安排管理</h2>
+        <div class="row">
+          <select id="dutyUser" style="flex:2"></select>
+          <input id="dutyDate" type="date" style="flex:2">
+          <select id="dutyShift" style="flex:1">
+            <option>全天</option><option>早班</option><option>晚班</option>
+          </select>
+        </div>
+        <button class="btn-primary" style="width:100%" onclick="addDuty()">添加值班安排</button>
+        <div class="msg" id="dutyMsg"></div>
+        <table style="margin-top:10px">
+          <thead><tr><th>日期</th><th>成员</th><th>班次</th><th>操作</th></tr></thead>
+          <tbody id="dutyBody"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h2>📷 打卡照片查看</h2>
+        <div class="row">
+          <input id="photoDate" type="date" style="flex:1">
+          <button class="btn-primary" style="flex:1" onclick="loadPhotos()">查看当日打卡照片</button>
+        </div>
+        <div id="photoList"></div>
+      </div>
+      <div class="card">
+        <h2>📤 考勤导出</h2>
+        <div class="row">
+          <input id="exportMonth" type="month" style="flex:1">
+          <button class="btn-green" style="flex:1" onclick="doExport()">导出 CSV 考勤表</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2>⚙️ 系统配置</h2>
+        <div class="row">
+          <input id="cfgLat" type="number" step="0.0001" placeholder="中心纬度" style="flex:1">
+          <input id="cfgLng" type="number" step="0.0001" placeholder="中心经度" style="flex:1">
+          <input id="cfgRange" type="number" placeholder="允许范围(米)" style="flex:1">
+        </div>
+        <div class="row">
+          <select id="cfgMap" style="flex:1">
+            <option value="">不启用中文地点显示</option>
+            <option value="amap">高德地图</option>
+            <option value="tencent">腾讯地图</option>
+          </select>
+          <input id="cfgMapKey" placeholder="地图 Web服务 API Key" style="flex:1">
+        </div>
+        <button class="btn-primary" style="width:100%" onclick="saveConfig()">保存配置</button>
+        <div class="msg" id="cfgMsg"></div>
+      </div>
+    </div>
+
+    <div class="footer">西安石油大学就创中心 · 内务管理平台</div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+let TOKEN = localStorage.getItem('token') || '';
+let ME = JSON.parse(localStorage.getItem('me') || 'null');
+let myPos = null;
+let dutyFileData = null;
+
+function tick() {
+  const now = new Date();
+  $('clock').textContent = now.toTimeString().slice(0, 8);
+  const week = ['日','一','二','三','四','五','六'][now.getDay()];
+  $('date').textContent = now.toLocaleDateString('zh-CN') + ' 星期' + week;
+}
+setInterval(tick, 1000); tick();
+
+function show(id, text, ok) {
+  const el = $(id);
+  el.textContent = text;
+  el.className = 'msg ' + (ok ? 'ok' : 'err');
+}
+
+async function api(path, opts = {}) {
+  opts.headers = Object.assign({'Content-Type': 'application/json'}, opts.headers || {});
+  if (TOKEN) opts.headers['Authorization'] = 'Bearer ' + TOKEN;
+  const res = await fetch(path, opts);
+  if (res.status === 401) { logout(true); throw new Error('登录已过期，请重新登录'); }
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.detail || '请求失败');
+  return data;
+}
+
+/* ---------- 登录注册 ---------- */
+function switchAuth(mode) {
+  $('tabLogin').className = mode === 'login' ? 'active' : '';
+  $('tabReg').className = mode === 'reg' ? 'active' : '';
+  $('loginForm').classList.toggle('hidden', mode !== 'login');
+  $('regForm').classList.toggle('hidden', mode !== 'reg');
+  $('authMsg').className = 'msg';
+}
+
+async function doLogin() {
+  try {
+    const d = await api('/api/auth/login', { method: 'POST', body: JSON.stringify({
+      username: $('loginUser').value.trim(), password: $('loginPw').value }) });
+    TOKEN = d.token; ME = d.user;
+    localStorage.setItem('token', TOKEN);
+    localStorage.setItem('me', JSON.stringify(ME));
+    if ($('rememberPw').checked) {
+      localStorage.setItem('savedLogin', JSON.stringify({ u: $('loginUser').value.trim(), p: $('loginPw').value }));
+    } else {
+      localStorage.removeItem('savedLogin');
+    }
+    enterMain();
+  } catch (e) { show('authMsg', e.message, false); }
+}
+
+async function doRegister() {
+  try {
+    const d = await api('/api/auth/register', { method: 'POST', body: JSON.stringify({
+      class_name: $('regClass').value.trim(), name: $('regName').value.trim(), phone: $('regPhone').value.trim() }) });
+    show('authMsg', d.message + '，您的用户名为：' + d.username, true);
+  } catch (e) { show('authMsg', e.message, false); }
+}
+
+function logout(silent) {
+  TOKEN = ''; ME = null;
+  localStorage.removeItem('token');
+  localStorage.removeItem('me');
+  $('mainPage').classList.add('hidden');
+  $('authPage').classList.remove('hidden');
+  if (!silent) show('authMsg', '已退出登录', true);
+}
+
+function enterMain() {
+  $('authPage').classList.add('hidden');
+  $('mainPage').classList.remove('hidden');
+  $('whoami').textContent = ME.name + (ME.role === 'admin' ? ' · 管理员' : '');
+  $('tabBtn-admin').classList.toggle('hidden', ME.role !== 'admin');
+  switchTab('home');
+  refreshAll();
+  loadBoard();
+  makeAdminFoldable();
+  loadTodayRecords('');
+}
+
+/* ---------- 定位 ---------- */
+function requestLocation() {
+  const el = $('locStatus');
+  if (!navigator.geolocation) {
+    el.textContent = '⚠️ 您的设备不支持定位，无法打卡';
+    el.className = 'loc-status err';
+    myPos = null;
+    return;
+  }
+  el.textContent = '📍 正在获取定位…';
+  el.className = 'loc-status';
+  navigator.geolocation.getCurrentPosition(async p => {
+    myPos = { lat: p.coords.latitude, lng: p.coords.longitude };
+    el.textContent = '📍 定位成功，正在获取地点名称…';
+    try {
+      const g = await api('/api/geocode?lat=' + myPos.lat + '&lng=' + myPos.lng);
+      if (g.address) {
+        el.textContent = '📍 当前位置：' + g.address;
+      } else {
+        el.textContent = '📍 定位成功（经纬度 ' + myPos.lat.toFixed(5) + ', ' + myPos.lng.toFixed(5) + '）';
+      }
+    } catch (e) {
+      el.textContent = '📍 定位成功（经纬度 ' + myPos.lat.toFixed(5) + ', ' + myPos.lng.toFixed(5) + '）';
+    }
+  }, e => {
+    myPos = null;
+    const tips = { 1: '您拒绝了位置权限，无法打卡，请在浏览器设置中允许位置权限',
+      2: '位置信息不可用，请检查设备定位是否开启', 3: '获取定位超时，请重试' };
+    el.textContent = '⚠️ ' + (tips[e.code] || '未获取到定位，无法打卡');
+    el.className = 'loc-status err';
+  }, { enableHighAccuracy: true, timeout: 10000 });
+}
+
+/* ---------- 拍照打卡 ---------- */
+let clockType = null;
+
+function takePhoto(type) {
+  return new Promise((resolve, reject) => {
+    const input = $('photoInput');
+    input.value = '';
+    clockType = type;
+    input.onchange = () => {
+      const f = input.files && input.files[0];
+      if (!f) { reject(new Error('未拍摄照片，已取消打卡')); return; }
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          const maxW = 1080;
+          const scale = Math.min(1, maxW / img.width);
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+          resolve(canvas.toDataURL('image/jpeg', 0.8));
+        };
+        img.onerror = () => reject(new Error('照片读取失败，请重拍'));
+        img.src = reader.result;
+      };
+      reader.onerror = () => reject(new Error('照片读取失败，请重拍'));
+      reader.readAsDataURL(f);
+    };
+    input.click();
+  });
+}
+
+async function clock(type) {
+  show('clockMsg', '正在调起相机，请拍照…', true);
+  let photo;
+  try {
+    photo = await takePhoto(type);
+  } catch (e) {
+    show('clockMsg', e.message, false);
+    return;
+  }
+  try {
+    const body = { photo };
+    if (myPos) { body.lat = myPos.lat; body.lng = myPos.lng; }
+    const d = await api('/api/clock-' + type, { method: 'POST', body: JSON.stringify(body) });
+    show('clockMsg', d.message + '，时间 ' + d.time + '，状态：' + d.status, true);
+    refreshAll();
+  } catch (e) { show('clockMsg', e.message, false); }
+}
+
+function statusTag(s) {
+  if (!s) return '';
+  const cls = s.includes('迟到') ? 'tag-late' : s.includes('早退') ? 'tag-early' : 'tag-normal';
+  return '<span class="tag ' + cls + '">' + s + '</span>';
+}
+
+/* ---------- 假勤申请 ---------- */
+const REQ_TYPE = { leave: '请假', cancel_leave: '销假', shift: '换班/补勤', overtime: '临时加班' };
+
+function onReqTypeChange() {
+  $('rowTarget').style.display = $('reqType').value === 'shift' ? 'flex' : 'none';
+}
+
+async function loadUsersForSelect() {
+  const users = await api('/api/users');
+  const opts = users.filter(u => u.id !== ME.id)
+    .map(u => '<option value="' + u.id + '">' + u.name + '</option>').join('');
+  $('reqTarget').innerHTML = opts || '<option value="">暂无其他成员</option>';
+  $('dutyUser').innerHTML = users.map(u => '<option value="' + u.id + '">' + u.name + '</option>').join('');
+}
+
+async function submitReq() {
+  const type = $('reqType').value;
+  const start = $('reqStart').value;
+  if (!start) return show('reqMsg', '请选择开始日期', false);
+  try {
+    const d = await api('/api/requests', { method: 'POST', body: JSON.stringify({
+      type, start_time: start, end_time: $('reqEnd').value || null,
+      reason: $('reqReason').value.trim(),
+      target_user_id: type === 'shift' ? Number($('reqTarget').value) : null }) });
+    show('reqMsg', d.message, true);
+    $('reqReason').value = '';
+    refreshAll();
+  } catch (e) { show('reqMsg', e.message, false); }
+}
+
+function reqItemHtml(r, isAdmin) {
+  const tag = '<span class="tag tag-' + r.status + '">' +
+    (r.status === 'pending' ? '待审批' : r.status === 'approved' ? '已通过' : '已驳回') + '</span>';
+  let meta = REQ_TYPE[r.type] + ' ｜ ' + r.start_time + (r.end_time ? ' ~ ' + r.end_time : '');
+  if (r.target_name) meta += ' ｜ 与 ' + r.target_name + ' 换班';
+  if (r.reason) meta += '<br>事由：' + r.reason;
+  if (r.review_comment) meta += '<br>审批意见：' + r.review_comment;
+  const btns = isAdmin && r.status === 'pending'
+    ? '<div class="row" style="margin:8px 0 0"><button class="btn-green btn-sm" style="flex:1" onclick="reviewReq(' + r.id + ',\'approve\')">通过</button>' +
+      '<button class="btn-red btn-sm" style="flex:1" onclick="reviewReq(' + r.id + ',\'reject\')">驳回</button></div>' : '';
+  return '<div class="req-item"><div class="head"><span>' + (r.user_name || '我') + '</span>' + tag + '</div>' +
+    '<div class="meta">' + meta + '</div>' + btns + '</div>';
+}
+
+async function reviewReq(rid, action) {
+  const comment = action === 'reject' ? (prompt('驳回意见（可留空）：') || '') : '';
+  try {
+    await api('/api/requests/' + rid + '/review', { method: 'POST', body: JSON.stringify({ action, comment }) });
+    refreshAll();
+  } catch (e) { alert(e.message); }
+}
+
+async function reviewAll(action) {
+  if (!confirm(action === 'approve' ? '确认一键通过所有待审批申请？' : '确认一键驳回所有待审批申请？')) return;
+  try {
+    const d = await api('/api/requests/review-all', { method: 'POST', body: JSON.stringify({ action, comment: '' }) });
+    alert(d.message);
+    refreshAll();
+  } catch (e) { alert(e.message); }
+}
+
+/* ---------- 管理员 ---------- */
+async function approveAllUsers() {
+  if (!confirm('确认一键通过所有待审核注册？')) return;
+  try {
+    const d = await api('/api/admin/users/approve-all', { method: 'POST' });
+    alert(d.message);
+    refreshAll();
+  } catch (e) { alert(e.message); }
+}
+
+function toggleSelectAll(checked) {
+  document.querySelectorAll('.user-chk').forEach(c => c.checked = checked);
+  updateSelCount();
+}
+
+function updateSelCount() {
+  const n = document.querySelectorAll('.user-chk:checked').length;
+  const el = $('selCount');
+  if (el) el.textContent = n ? '已选 ' + n + ' 人' : '';
+}
+
+function getSelectedIds() {
+  return Array.from(document.querySelectorAll('.user-chk:checked')).map(c => Number(c.value));
+}
+
+async function batchAction(action, idsArg) {
+  const ids = idsArg || getSelectedIds();
+  if (!ids.length) return alert('请先勾选成员');
+  const names = { delete: '批量删除（不可恢复，含考勤数据）', reset_password: '重置密码为123456',
+    activate: '激活账号（初始密码123456）', approve: '批量通过注册' };
+  if (!confirm('确认对选中的 ' + ids.length + ' 个成员执行【' + names[action] + '】？')) return;
+  try {
+    const d = await api('/api/admin/users/batch', { method: 'POST', body: JSON.stringify({ action, ids }) });
+    alert(d.message);
+    refreshAll();
+  } catch (e) { alert(e.message); }
+}
+
+async function addDuty() {
+  try {
+    const d = await api('/api/duty', { method: 'POST', body: JSON.stringify({
+      user_id: Number($('dutyUser').value), date: $('dutyDate').value,
+      shift: $('dutyShift').value }) });
+    show('dutyMsg', d.message, true);
+    refreshAll();
+  } catch (e) { show('dutyMsg', e.message, false); }
+}
+
+async function delDuty(did) {
+  if (!confirm('确认删除该值班安排？')) return;
+  try { await api('/api/duty/' + did, { method: 'DELETE' }); refreshAll(); }
+  catch (e) { alert(e.message); }
+}
+
+async function setUserStatus(uid, status) {
+  try { await api('/api/admin/users/' + uid + '/status', { method: 'POST', body: JSON.stringify({ status }) }); refreshAll(); }
+  catch (e) { alert(e.message); }
+}
+
+async function setUserRole(uid, role) {
+  try { await api('/api/admin/users/' + uid + '/role', { method: 'POST', body: JSON.stringify({ role }) }); refreshAll(); }
+  catch (e) { alert(e.message); }
+}
+
+async function delUser(uid) {
+  if (!confirm('确认删除该成员及其所有数据？此操作不可恢复！')) return;
+  try { await api('/api/admin/users/' + uid, { method: 'DELETE' }); refreshAll(); }
+  catch (e) { alert(e.message); }
+}
+
+function doExport() {
+  const m = $('exportMonth').value || new Date().toISOString().slice(0, 7);
+  window.open('/api/export?month=' + m + '&token=' + encodeURIComponent(TOKEN), '_blank');
+}
+
+async function saveConfig() {
+  try {
+    await api('/api/config', { method: 'PUT', body: JSON.stringify({
+      center_lat: parseFloat($('cfgLat').value), center_lng: parseFloat($('cfgLng').value),
+      allow_range: parseInt($('cfgRange').value),
+      map_provider: $('cfgMap').value, map_key: $('cfgMapKey').value.trim() }) });
+    show('cfgMsg', '配置已保存', true);
+  } catch (e) { show('cfgMsg', e.message, false); }
+}
+
+/* ---------- 值班表导入 ---------- */
+function onDutyFile() {
+  const f = $('dutyFile').files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    const bytes = new Uint8Array(reader.result);
+    let bin = '';
+    const chunk = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunk) {
+      bin += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+    }
+    dutyFileData = { filename: f.name, content_base64: btoa(bin) };
+    show('importMsg', '已选择文件：' + f.name + '，请设置开始日期后点击导入', true);
+  };
+  reader.readAsArrayBuffer(f);
+}
+
+async function importDuty() {
+  if (!dutyFileData) return show('importMsg', '请先选择值班表文件', false);
+  const start = $('dutyStart').value;
+  if (!start) return show('importMsg', '请选择值班开始日期', false);
+  if (!confirm('确认导入值班表？将自动识别表格并生成 ' + $('dutyWeeks').value + ' 周的值班安排。')) return;
+  try {
+    const d = await api('/api/duty/import', { method: 'POST', body: JSON.stringify({
+      filename: dutyFileData.filename, content_base64: dutyFileData.content_base64,
+      start_date: start, weeks: Number($('dutyWeeks').value) }) });
+    let info = d.message + '：共生成 ' + d.inserted + ' 条值班安排（' + d.weeks + ' 周，从 ' + d.start_date + ' 起）';
+    if (d.created_users && d.created_users.length) info += '\n自动创建成员：' + d.created_users.join('、');
+    if (d.skipped && d.skipped.length) info += '\n未识别的姓名（请手动处理）：' + d.skipped.join('、');
+    show('importMsg', info, true);
+    refreshAll();
+  } catch (e) { show('importMsg', e.message, false); }
+}
+
+/* ---------- 值班看板与查询 ---------- */
+let boardStart = null;
+
+async function loadBoard() {
+  const url = '/api/duty/board' + (boardStart ? '?start=' + boardStart : '');
+  const d = await api(url);
+  const week = ['周一','周二','周三','周四','周五','周六','周日'];
+  const head = '<tr><th>班次</th>' + d.dates.map((dt, i) =>
+    '<th>' + week[i] + '<br><span style="color:#aaa;font-weight:normal">' + dt.slice(5) + '</span></th>').join('') + '</tr>';
+  const shifts = Object.keys(d.board);
+  let body = '';
+  if (shifts.length) {
+    for (const s of shifts) {
+      body += '<tr><td style="white-space:nowrap"><b>' + s + '</b></td>' + d.dates.map(dt => {
+        const names = (d.board[s] || {})[dt] || [];
+        return '<td>' + (names.length
+          ? names.map(n => '<span class="tag tag-normal" style="margin:1px;display:inline-block">' + n + '</span>').join(' ')
+          : '<span style="color:#ccc">—</span>') + '</td>';
+      }).join('') + '</tr>';
+    }
+  } else {
+    body = '<tr><td colspan="8" class="empty">本周暂无值班安排</td></tr>';
+  }
+  document.querySelector('#boardTable thead').innerHTML = head;
+  $('boardBody').innerHTML = body;
+  $('boardWeek').textContent = d.start + ' 那周';
+}
+
+function shiftWeek(delta) {
+  if (delta === 0) {
+    boardStart = null;
+  } else {
+    const base = boardStart ? new Date(boardStart) : new Date();
+    base.setDate(base.getDate() + delta);
+    boardStart = base.toISOString().slice(0, 10);
+  }
+  loadBoard();
+}
+
+async function queryDuty() {
+  const name = $('queryName').value.trim();
+  if (!name) return;
+  try {
+    const rows = await api('/api/duty/query?name=' + encodeURIComponent(name));
+    $('queryResult').innerHTML = rows.length
+      ? '<table><thead><tr><th>日期</th><th>班次</th><th>备注</th></tr></thead><tbody>' +
+        rows.map(r => '<tr><td>' + r.date + '</td><td>' + r.shift + '</td><td>' + (r.note || '') + '</td></tr>').join('') +
+        '</tbody></table>'
+      : '<div class="empty">该成员暂无值班安排</div>';
+  } catch (e) {
+    $('queryResult').innerHTML = '<div class="empty">' + e.message + '</div>';
+  }
+}
+
+/* ---------- 管理员照片查看 ---------- */
+async function loadPhotos() {
+  const d = $('photoDate').value || new Date().toISOString().slice(0, 10);
+  try {
+    const rows = await api('/api/admin/photos?date=' + d);
+    if (!rows.length) {
+      $('photoList').innerHTML = '<div class="empty">当日暂无打卡照片</div>';
+      return;
+    }
+    $('photoList').innerHTML = rows.map(r =>
+      '<div class="req-item"><div class="head"><span>' + r.name +
+      (r.shifts ? '（值班班次：' + r.shifts + '）' : '') + '</span>' + statusTag(r.status) + '</div>' +
+      '<div class="meta">签到 ' + (r.check_in || '—') + ' ｜ 签退 ' + (r.check_out || '—') + '</div>' +
+      '<div class="row">' +
+      (r.photo_in ? '<a href="/uploads/' + r.photo_in + '" target="_blank" style="flex:1"><img src="/uploads/' + r.photo_in + '" style="width:100%;border-radius:8px"></a>' : '') +
+      (r.photo_out ? '<a href="/uploads/' + r.photo_out + '" target="_blank" style="flex:1"><img src="/uploads/' + r.photo_out + '" style="width:100%;border-radius:8px"></a>' : '') +
+      '</div></div>').join('');
+  } catch (e) {
+    $('photoList').innerHTML = '<div class="empty">' + e.message + '</div>';
+  }
+}
+
+/* ---------- 管理页折叠与今日打卡 ---------- */
+function makeAdminFoldable() {
+  document.querySelectorAll('#page-admin > .card').forEach(card => {
+    if (card.classList.contains('fold-card')) return;
+    card.classList.add('fold-card');
+    const h2 = card.querySelector('h2');
+    const body = document.createElement('div');
+    body.className = 'fold-body';
+    while (h2.nextSibling) body.appendChild(h2.nextSibling);
+    card.appendChild(body);
+    h2.addEventListener('click', () => card.classList.toggle('open'));
+  });
+}
+
+async function loadTodayRecords(name) {
+  try {
+    const url = '/api/admin/today-records' + (name ? '?name=' + encodeURIComponent(name) : '');
+    const rows = await api(url);
+    const cnt = $('todayCount');
+    if (cnt) cnt.textContent = rows.length + ' 人已打卡';
+    $('todayRecordsBody').innerHTML = rows.length
+      ? rows.map(r => '<tr><td>' + r.user_name + '</td><td>' + (r.shifts || '—') + '</td><td>' + (r.check_in || '—') + '</td><td>' + (r.check_out || '—') + '</td><td>' + statusTag(r.status) + '</td></tr>').join('')
+      : '<tr><td colspan="5" class="empty">暂无打卡记录</td></tr>';
+  } catch (e) {
+    $('todayRecordsBody').innerHTML = '<tr><td colspan="5" class="empty">' + e.message + '</td></tr>';
+  }
+}
+
+/* ---------- 刷新 ---------- */
+function switchTab(tab) {
+  ['home','req','me','admin'].forEach(t => {
+    $('page-' + t).classList.toggle('hidden', t !== tab);
+    const btn = $('tabBtn-' + t);
+    if (btn) btn.className = (t === tab ? 'active' : '') + (t === 'admin' && ME && ME.role !== 'admin' ? ' hidden' : '');
+  });
+}
+
+async function refreshAll() {
+  if (!TOKEN) return;
+  try {
+    const rec = await api('/api/today');
+    $('todayStatus').innerHTML = rec
+      ? '今日：签到 ' + (rec.check_in || '—') + ' ｜ 签退 ' + (rec.check_out || '—') + ' ｜ ' + statusTag(rec.status)
+      : '今日暂无打卡记录';
+    const rows = await api('/api/records');
+    $('recordsBody').innerHTML = rows.length
+      ? rows.map(r => '<tr><td>' + r.date + '</td><td>' + (r.check_in || '—') + '</td><td>' + (r.check_out || '—') + '</td><td>' + statusTag(r.status) + '</td></tr>').join('')
+      : '<tr><td colspan="4" class="empty">暂无记录</td></tr>';
+    const stats = await api('/api/stats');
+    $('statsBody').innerHTML = stats.length
+      ? stats.map(s => '<tr><td>' + s.name + '</td><td>' + (s.days || 0) + '</td><td>' + (s.late || 0) + '</td><td>' + (s.early || 0) + '</td><td>' + (s.field || 0) + '</td></tr>').join('')
+      : '<tr><td colspan="5" class="empty">暂无成员</td></tr>';
+    const mine = await api('/api/requests/mine');
+    $('myReqList').innerHTML = mine.length ? mine.map(r => reqItemHtml(r, false)).join('') : '<div class="empty">暂无申请记录</div>';
+    const duty = await api('/api/duty/mine');
+    $('myDutyList').innerHTML = duty.length
+      ? '<table><thead><tr><th>日期</th><th>班次</th><th>备注</th></tr></thead><tbody>' +
+        duty.map(d => '<tr><td>' + d.date + '</td><td>' + d.shift + '</td><td>' + (d.note || '') + '</td></tr>').join('') + '</tbody></table>'
+      : '<div class="empty">暂无值班安排</div>';
+    await loadUsersForSelect();
+    if (ME.role === 'admin') {
+      const pending = await api('/api/requests/pending');
+      $('pendingCount').textContent = pending.length + ' 条待办';
+      $('pendingList').innerHTML = pending.length ? pending.map(r => reqItemHtml(r, true)).join('') : '<div class="empty">暂无待审批申请</div>';
+      const users = await api('/api/admin/users');
+      $('adminUsersBody').innerHTML = users.map(u => {
+        const st = u.status === 'active' ? '<span class="tag tag-approved">正常</span>' :
+          u.status === 'pending' ? '<span class="tag tag-pending">待审核</span>' :
+          u.status === 'imported' ? '<span class="tag tag-late">未激活</span>' : '<span class="tag tag-rejected">已停用</span>';
+        let ops = '';
+        if (u.status === 'pending') ops += '<button class="btn-green btn-sm" onclick="setUserStatus(' + u.id + ',\'active\')">通过</button> ';
+        if (u.status === 'imported') ops += '<button class="btn-primary btn-sm" onclick="batchAction(\'activate\',[' + u.id + '])">激活</button> ';
+        if (u.status === 'active' && u.id !== ME.id) ops += '<button class="btn-gray btn-sm" onclick="setUserStatus(' + u.id + ',\'rejected\')">停用</button> ';
+        if (u.id !== ME.id) ops += '<button class="btn-red btn-sm" onclick="delUser(' + u.id + ')">删除</button>';
+        const chk = u.id === ME.id ? '' : '<input type="checkbox" class="user-chk" value="' + u.id + '" onchange="updateSelCount()">';
+        return '<tr><td>' + chk + '</td><td>' + u.name + '</td><td>' + u.username + '</td><td>' +
+          (u.id === ME.id ? '管理员' : '<select onchange="setUserRole(' + u.id + ',this.value)"><option value="member"' + (u.role === 'member' ? ' selected' : '') + '>成员</option><option value="admin"' + (u.role === 'admin' ? ' selected' : '') + '>管理员</option></select>') +
+          '</td><td>' + st + '</td><td>' + ops + '</td></tr>';
+      }).join('');
+      $('memberInfoBody').innerHTML = users.map(u => {
+        const st = u.status === 'active' ? '正常' : u.status === 'pending' ? '待审核' : u.status === 'imported' ? '未激活' : '已停用';
+        return '<tr><td>' + u.name + '</td><td>' + u.username + '</td><td>' + (u.class_name || '—') + '</td><td>' + (u.role === 'admin' ? '管理员' : '成员') + '</td><td>' + st + '</td><td>' + (u.created_at || '') + '</td></tr>';
+      }).join('');
+      const allDuty = await api('/api/duty');
+      $('dutyBody').innerHTML = allDuty.length
+        ? allDuty.map(d => '<tr><td>' + d.date + '</td><td>' + d.name + '</td><td>' + d.shift + '</td><td><button class="btn-red btn-sm" onclick="delDuty(' + d.id + ')">删除</button></td></tr>').join('')
+        : '<tr><td colspan="4" class="empty">暂无值班安排</td></tr>';
+      const cfg = await api('/api/config');
+      $('cfgLat').value = cfg.center_lat; $('cfgLng').value = cfg.center_lng; $('cfgRange').value = cfg.allow_range;
+      $('cfgMap').value = cfg.map_provider || ''; $('cfgMapKey').value = cfg.map_key || '';
+    }
+  } catch (e) { if (e.message.includes('过期')) {} }
+}
+
+/* ---------- 启动 ---------- */
+const saved = JSON.parse(localStorage.getItem('savedLogin') || 'null');
+if (saved) { $('loginUser').value = saved.u; $('loginPw').value = saved.p; }
+if (TOKEN && ME) {
+  api('/api/auth/me').then(enterMain).catch(() => logout(true));
+}
+</script>
+</body>
+</html>
